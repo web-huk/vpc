@@ -9,7 +9,7 @@ resource "aws_subnet" "pub_subnets" {
     count                = local.count
     vpc_id               = aws_vpc.vnet.id
     cidr_block           = cidrsubnet(var.network_details.cidr_block, 8, count.index)
-    availability_zone    = element(var.availability_zones, random_integer.random_index.result)
+    availability_zone    = element(var.availability_zones, count.index)
     tags                 = {
         Name             = "${local.env_prefix}-subnet-${count.index + 1}"
     }
