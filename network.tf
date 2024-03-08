@@ -9,9 +9,9 @@ resource "aws_subnet" "pub_subnets" {
     count                = local.count
     vpc_id               = aws_vpc.vnet.id
     cidr_block           = cidrsubnet(var.network_details.cidr_block, 8, count.index)
-    availability_zone    = format("${var.default_region.region}%s", count.index%2==0?"a":"b")
+    availability_zone    = element(var.availability_zones, random_integer.random_index.result)
     tags                 = {
-        Name             = "${local.env_prefix}-subnet"
+        Name             = "${local.env_prefix}-subnet-${count.index + 1}"
     }
     depends_on           = [ aws_vpc.vnet ]
 }
@@ -53,3 +53,5 @@ resource "aws_route_table_association" "a" {
 
     depends_on          = [ aws_route_table.public_rt, aws_route_table.private_rt ]
 }
+
+data "aws_availability_zones" "azs" {}

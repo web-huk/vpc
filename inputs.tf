@@ -9,6 +9,10 @@ variable "default_region" {
     }
 }
 
+variable "availability_zones" {
+  default = ["ap-south-2a", "ap-south-2b", "ap-south-2c"]
+}
+
 variable "network_details" {
     type            = object({
         name        = string
